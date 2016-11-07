@@ -1,0 +1,237 @@
+<div class="row">
+	<div class="col-xs-12">
+		<p>当前位置：<a href="${rc.contextPath}/chnlUser/userList">渠道用户管理</a> >> 用户列表</p>
+		<hr>
+	</div>
+	<div class="col-xs-12" >
+		<form class="row form-horizontal" action="${rc.contextPath}/chnlUser/userList">
+			<div class="col-xs-2" style="font-size:20px;width:12%">
+				用户查询
+			</div>
+			<div class="col-xs-9" style="width:70%;padding-left:0;padding-right:0">
+				<div class="form-group">
+					<label class="col-xs-2 control-label">用户名</label>
+				    <div class="col-xs-3"><input class="form-control" type="text" maxlength=12 name="userId" value="$!userId"></div>
+				    <label class="col-xs-2 control-label">姓名</label>
+				    <div class="col-xs-3"><input class="form-control" type="text" name="trueName" value="$!trueName"></div>
+			    </div>
+			    <div class="form-group">
+				    <label class="col-xs-2 control-label">用户权限</label>
+				    <div class="col-xs-3">
+				    	<select class="form-control" name="userType">
+				    		<option value="">全部</option>
+				    		<option value="1" #if($!userType=="1") selected #end>所有权限</option>
+				    		<option value="2" #if($!userType=="2") selected #end>管理权限</option>
+				    		<option value="3" #if($!userType=="3") selected #end>交易权限</option>
+				    	</select>
+				    </div>
+				    <label class="col-xs-2 control-label">生效状态</label>
+				    <div class="col-xs-3">
+				    	<select class="form-control" name="validSt">
+				    		<option value="">全部</option>
+				    		<option value="1" #if($!validSt=="1") selected #end>已生效</option>
+				    		<option value="0" #if($!validSt=="0") selected #end>未生效</option>
+				    	</select>
+				    </div>
+			    </div>
+		    </div>
+		    <div class="col-xs-1">
+		    	<button type="submit" class="btn btn-primary search-btn" style="height:83px">查询</button>
+		    </div>
+		    <div class="col-xs-1">
+		    	<button type="button" class="btn btn-success search-btn" onclick="resetInput()" style="height:83px">重置</button>
+		    </div>
+		</form>
+	</div>
+</div>
+<div class="row admin-row-margin">
+	<hr>
+	<div class="row">
+		<div class="col-xs-6" style="font-size:18px">查询结果<span style="font-size:14px">···(共$!page.total条数据)</span></div>
+		<div class="col-xs-6" style="text-align:right"><a class="btn btn-primary" href="${rc.contextPath}/chnlUser/addChnlUser"><span class="icon-plus"></span> 添加用户</a></div>
+	</div>
+	<div class="col-xs-12">
+		<table class="table table-striped table-bordered table-hover">
+			<thead style="background-color:#FB9100">
+				<th>用户ID</th>
+				<th>姓名</th>
+				<th>用户权限</th>
+				<th>生效状态</th>
+				<th>余额(元)</th>
+				<th style="width:30%">操作</th>
+			</thead>
+			<tbody>
+				#if($!channelUserList.size()==0)
+					<tr><td colspan=6 style="text-align:center">查无数据，请确认查询条件</td></tr>
+				#end
+				#foreach($channelUser in $!channelUserList)
+					<tr>
+						<td>
+							#if($channelUser.userType!="2")
+							<a href="${rc.contextPath}/chnlUser/userStatistic?id=$channelUser.id">$!channelUser.userId</a>
+							#else
+							<a href="${rc.contextPath}/chnlUser/userDetail?id=$channelUser.id">$!channelUser.userId</a>
+							#end
+						</td>
+						<td>$!channelUser.trueName</td>
+						<td>
+							#if($!channelUser.userType=="1")<span style="color:green">所有权限</span>
+							#elseif($!channelUser.userType=="2") <span style="color:blue">管理权限</span>
+							#else <span style="color:#333">交易权限</span>
+							#end
+						</td>
+						<td>
+							#if($!channelUser.validSt=="1")<span style="color:green">已生效</span>
+							#else <span style="color:red">未生效</span>
+							#end
+						</td>
+						<td>$!channelUser.restAt</td>
+						<td>
+							#if("$channelUser.userId" != "$channelUser.chnlId")
+								#if("$chnlSysUser.userId"=="$channelUser.userId")
+									<a href="${rc.contextPath}/chnlUser/updChnlUser?id=$!channelUser.id">修改</a>
+									<a href="${rc.contextPath}/chnlUser/updPassword?userId=$!channelUser.userId">修改密码</a>
+								#elseif("$chnlSysUser.userId"=="$chnlSysUser.chnlId"||"$channelUser.userType"=="3")
+									<a href="${rc.contextPath}/chnlUser/updChnlUser?id=$!channelUser.id">修改</a>
+									<a href="javascript:resetPwd('$channelUser.userId')">重置密码</a>
+									<a href="javascript:delChnlUser('$channelUser.userId','$channelUser.chnlId')">删除</a>
+								#end
+							#end
+							#if($channelUser.userType=="3"||$channelUser.userType=="1")
+								<button class="btn btn-success" style="padding:0 5px;vertical-align:initial;" onclick="javascript:addResrAt('$!channelUser.userId','$!channelUser.chnlId')">增值</button>
+							#end
+						</td>
+					</tr>
+				#end
+			</tbody>
+		</table>
+		<!-- 分页-->
+		#if($!page.total > $!page.pageSize)
+			<div class="row ">
+				<div style="float:right">
+				<ul class="pagination">
+					<li><a href="${rc.contextPath}/chnlUser/userList?limit=1&userId=$!userId&trueName=$!trueName&userType=$!userType&validSt=$!validSt">首页</a></li>
+	              #if($!page.currNo!=1)
+	                  <li class="previous"><a  href="${rc.contextPath}/chnlUser/userList?limit=$!page.lastNo&userId=$!userId&trueName=$!trueName&userType=$!userType&validSt=$!validSt" >上一页</a><li>
+	              #end
+	            #set($no=[$!page.beginPgNo .. $!page.nextEndPgNo])
+	            #foreach($i in $no) 
+	                <li #if(($!page.currNo)==$i) class="active" #else class="disable" #end><a href="${rc.contextPath}/chnlUser/userList?limit=$i&userId=$!userId&trueName=$!trueName&userType=$!userType&validSt=$!validSt" >$i</a></li>
+	            #end
+	             #if($!page.currNo!=$!page.endPgNo)
+	                <li class="next"><a href="${rc.contextPath}/chnlUser/userList?limit=$!page.nextNo&userId=$!userId&trueName=$!trueName&userType=$!userType&validSt=$!validSt" >下一页</a></li>
+	             #end
+	             	<li><a href="${rc.contextPath}/chnlUser/userList?limit=$page.endPgNo&userId=$!userId&trueName=$!trueName&userType=$!userType&validSt=$!validSt" class="home">尾页</a></li>
+	             	<li><a >共$!page.pageNo页</a></li>
+	            </ul>
+	            </div>
+	        </div>
+		#end
+		<!--分页 End -->
+	</div>
+</div>
+
+<!-- confirm Modal-->
+<div style="clear:both;"></div>
+<div id="myModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content" style="*width:600px;*margin:30px auto;">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">提示</h4>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+      	<button type="button" id="delConfirmBtn" class="confirm-no btn btn-danger">确定</button>
+      	<button type="button" class="confirm-no btn btn-primary" data-dismiss="modal">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- confirm Modal-->
+
+<div class="mask" id="mask" style="position:fixed;top:0;right:0;bottom:0;left:0;z-index:1050;background-color:#eee;opacity:.8;display:none">
+	<span class="icon-spinner icon-spin" style="top:40%;left:45%;position:absolute;font-size:40px"></span>
+</div>
+
+<script>
+function resetInput(){
+	$('input').val('');
+	$('select option[value=""]').attr('selected','selected');
+}
+
+function delChnlUser(userId,chnlId){
+	$('.modal-body').html("确定删除用户【"+userId+"】？");
+	$('.modal').modal('show').on('shown');
+	$('#delConfirmBtn').unbind('click').click(function(){
+		window.location.href="${rc.contextPath}/chnlUser/delChnlUser?userId="+userId+"&chnlId="+chnlId;
+	});
+}
+
+function resetPwd(userId){
+	$('.modal-body').html("确定重置用户【"+userId+"】的密码？");
+	$('.modal').modal('show').on('shown');
+	$('#delConfirmBtn').unbind('click').click(function(){
+		$('.modal').modal('hide');
+		$.post('${rc.contextPath}/chnlUser/resetPwd',{userId:userId},function(result){
+			flexInfo(result);
+		})
+	});
+}
+
+
+function addResrAt(userId,chnlId){
+	var str = $('<div class="row">\
+      		<label class="col-xs-3 label-right" style="padding-top:7px;margin-bottom:0;">请输入增值金额：</label>\
+	      	<div class="col-xs-5">\
+	      		<input class="form-control" type="text" name="addAt" id="addAt">\
+	      	</div>\
+	      	<label class="col-xs-1 label-right" style="padding-top:7px;margin-bottom:0;">元</label>\
+	      	<label class="col-xs-3 label-right" style="padding-top:7px;margin-bottom:0;color:red" id="addAtTip"></label>\
+      	</div>');
+	$('.modal-body').html(str);
+	$('.modal').modal('show').on('shown');
+	$('#delConfirmBtn').unbind('click').click(function(){
+		submitAddAt(userId, chnlId);
+	});
+}
+
+function submitAddAt(userId, chnlId){
+	$('#addAtTip').html('');
+	var addAt = $('#addAt').val();
+	if(checkAt(addAt)){
+		$.ajax({
+			url:"${rc.contextPath}/chnlCharge/addUserAt",
+			data:{userId:userId,chnlId:chnlId,addAt:addAt},
+			type:"post",
+			dataType:"json",
+			beforeSend:function(){
+				$('.modal').modal('hide');
+				$('#mask').css({"display":"block"});
+			},
+			success:function(result){
+				flexInfo(result.errMsg);
+				$('#restAt').html(result.restAt);
+				
+			},
+			error:function(result){
+				alert("服务器异常，请联系管理员");
+			},
+			complete:function(result){
+				$('.modal').modal('hide');
+				$('#mask').css({"display":"none"});
+			}
+		});
+	}else
+		$('#addAtTip').html("<span class='icon-remove-sign'></span> 格式有误");
+}
+
+function checkAt(addAt){
+	flag = true;
+	if(""==addAt||!(/^[0-9]+[\.][0-9]{0,2}$/.test(addAt)||/^[0-9]+$/.test(addAt))){
+		flag = false;
+	}
+	return flag;
+}
+</script>

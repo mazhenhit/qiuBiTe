@@ -37,4 +37,9 @@ public class MsgInfo {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
+
+	@Override
+	public String toString() {
+		return "id:" + id + ";phoneNum" + phoneNum + ";name" + name + ";msg" + msg;
+	}
 }

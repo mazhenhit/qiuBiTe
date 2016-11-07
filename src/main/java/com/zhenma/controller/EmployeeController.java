@@ -1,4 +1,4 @@
-package com.zhenma.comtroller;
+package com.zhenma.controller;
 
 import java.io.IOException;
 

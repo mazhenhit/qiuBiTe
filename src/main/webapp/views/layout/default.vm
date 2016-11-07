@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="renderer" content="webkit" />
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<link rel="stylesheet" href="${rc.contextPath}/resources/css/bootstrap.css">
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link href="${rc.contextPath}/resources/css/font-awesome.css" rel="stylesheet">
+	<link href="${rc.contextPath}/resources/css/bootstrap-datetimepicker.css" rel="stylesheet">
+	<link href="${rc.contextPath}/resources/css/adminView.css" rel="stylesheet">
+	<link href="${rc.contextPath}/resources/css/metisMenu.css" rel="stylesheet">
+	<link href="${rc.contextPath}/resources/css/authWeb.css" rel="stylesheet">
+	<script src="${rc.contextPath}/resources/js/jquery.min.js" type="text/javascript"></script>
+    <title>实名认证渠道管理系统</title>
+  </head>
+  <style>
+  body{min-width:1270px}
+  </style>
+  <body>
+  #set($chnlSysUser=$session.getAttribute("chnlSysUser"))
+  <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom:0">
+	  <div class="navbar-header">
+	      <a class="navbar-brand" href="#"><i class="icon-credit-card"></i> 实名认证渠道管理系统</a>
+	  </div>
+	  <!-- /.navbar-header -->
+	  
+	  <ul class="nav navbar-top-links navbar-right">
+	  	<li class="dropdown">
+	  		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	  			<i class="icon-user"></i> $chnlSysUser.trueName | 欢迎您 <i class="icon-caret-down"></i>
+	  		</a>
+	  		<ul class="dropdown-menu dropdown-user">
+	  			<li ><a href="${rc.contextPath}/chnlUser/updPassword"><i class="icon-wrench"></i> 修改密码</a></li>
+	            <li class="divider"></li>
+	            <li><a href="${rc.contextPath}/chnlsys/logout"><i class="icon-signout"></i> 退出</a></li>
+	        </ul>
+	  	</li>
+	  </ul>
+	  <!-- /.navbar-static-side -->
+	</nav>
+	#parse("/layout/leftNav.vm")
+	<div id="page-wrapper">
+		$screen_content
+    </div>
+	<div id="backToTop" class="back-to-top"><i class="icon-3x icon-angle-up"></i></div>
+  </body>
+  <script src="${rc.contextPath}/resources/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="${rc.contextPath}/resources/js/metisMenu.js" type="text/javascript"></script>
+  <script src="${rc.contextPath}/resources/js/md5.js" type="text/javascript"></script>
+  <script src="${rc.contextPath}/resources/js/adminView.js" type="text/javascript"></script>
+</html>

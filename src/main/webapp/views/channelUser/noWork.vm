@@ -1,0 +1,256 @@
+<style>
+.nav-tabs li a{padding-left:15px}
+</style>
+<div class="row margin-bottom-20">
+	<div class="col-lg-12">
+		<h1>$!channelUser.trueName</h1>
+		<br>
+		<ul id="myTab" class="nav nav-tabs">
+		   <li><a href="${rc.contextPath}/chnlUser/userDetail?id=$!channelUser.id">基本信息</a></li>
+		   <li class="active"><a href="${rc.contextPath}/chnlUser/userStatistic?id=$!channelUser.id">交易统计信息</a></li>
+		</ul>
+	</div>
+</div>
+#if("2"==$!channelUser.userType)
+<div class="row">
+	<h3>该用户为管理权限，交易统计信息</h3>
+</div>
+#else
+<div class="row">
+	<div class="col-lg-12 detail-module authweb-shadow">
+		<h4>账户余额</h4>
+		<hr>
+		<div class="col-lg-4">
+			<div class="panel panel-primary">
+			    <div class="panel-heading">
+			    	<div class="row">
+				        <div class="col-lg-12 text-right">
+			                <div class="huge">$!channelUser.restAt<span style="font-size:14px;margin-left:7px">元</span></div>
+			                <div>剩余额度</div>
+				        </div>
+			        </div>
+			    </div>
+			</div>
+		</div>
+		<div class="col-lg-12 detail-module authweb-shadow">
+		<h4>今日交易信息</h4>
+		<hr>
+		<div class="col-lg-12 margin-bottom-20" id="todayAtDiv">
+		</div>
+		<div class="col-lg-12 margin-bottom-20" id="todayTransDiv">
+		</div>
+	</div>
+</div>
+<div class="row margin-bottom-20">
+	<div class="col-lg-12">
+		<form class="form-horizontal">
+			<div class="form-group" style="margin:0;padding:5px;background-color:#BAD2E6">
+				<div class="col-lg-2" style="display:inline-block;"></div>
+				<label class="col-lg-1 control-label">开始时间</label>
+				<div class="col-lg-2">
+					<input class="form-control tmSelect" type="text" id="startTime" name="startTime" value="$!startTime">
+				</div>
+				<label class="col-lg-1 control-label">结束时间</label>
+				<div class="col-lg-2">
+					<input class="form-control tmSelect" type="text" id="endTime" name="endTime" value="$!endTime">
+				</div>
+				<div class="col-lg-2">
+					<button class="btn btn-primary" onclick="return checkDate()">查询</button>
+				</div>
+				<div class="col-lg-2" style="display:inline-block"></div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="row margin-bottom-20">
+	<div class="col-lg-12">
+		<div class="panel panel-green">
+			<div class="panel-heading">
+				<i class="icon-bar-chart"></i>  每日交易量
+			</div>
+			<div class="panel-body">
+				<div style="width:100%;margin:20px auto;">
+					<canvas id="myChartDayAt" height="80"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row margin-bottom-20">
+	<div class="col-lg-8">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<i class="icon-tasks"></i>  通道认证占比统计
+			</div>
+			<div class="panel-body">
+				<div class="col-lg-7">
+					<canvas id="myChartMode" width=400 height=300></canvas>
+				</div>
+				<div class="col-lg-5" style="height:300px">
+					<div style="top:28%;position: absolute;">
+						<p style=""><span class="statistic-span" style="background-color:#FF9900"></span><span>1.卡号+姓名</span></p>
+						<p><span class="statistic-span" style="background-color:#69D2E7"></span>2.卡号+身份证号</p>
+						<p><span class="statistic-span" style="background-color:#FF6666"></span>3.卡号+姓名+身份证号</p>
+						<p><span class="statistic-span" style="background-color:#CC99CC"></span>4.卡号+姓名+身份证号+手机号</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-4">
+		<div class="panel panel-red">
+			<div class="panel-heading">
+				<i class="icon-fire"></i>  最多使用用户
+			</div>
+			<div class="panel-body" style="padding:0">
+				<table class="table table-hover" style="margin:0">
+					<thead><th>用户名</th><th>认证花费</th></thead>
+					<tbody>
+						<tr><td>魏洲庆</td><td>12221.20元</td></tr>
+						<tr><td>拉格朗日</td><td>12412.00元</td></tr>
+						<tr><td>Matlab</td><td>61266.00元</td></tr>
+						<tr><td>BiuBiuBiu</td><td>6412.00元</td></tr>
+						<tr><td>Dell</td><td>124123.00元</td></tr>
+						<tr><td>王老吉</td><td>454132.00元</td></tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+#end
+
+<script src="${rc.contextPath}/resources/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+<script src="${rc.contextPath}/resources/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+<script src="${rc.contextPath}/resources/js/Chart.min.js" type="text/javascript"></script>
+<script>
+function loadTodayDate(){
+	var isLimit = "$!channelUser.isLimit";
+	var todayAtDiv = $('#todayAtDiv');
+	var todayTransDiv = $('#todayTransDiv');
+	//额度
+	if("1"==isLimit||"2"==isLimit||"0"==isLimit){
+		var dayAtUsed = "$!channelUser.dayAtUsed";
+		var dayAtLimitTop = "$!channelUser.dayAtLimitTop";
+		var dayAtLimit = "$!channelUser.dayAtLimit";
+		var userRestAt = "$!channelUser.restAt";
+		var dayAtRest=0;
+		if(""!=dayAtLimit)
+			dayAtRest = dayAtLimit - dayAtUsed;
+		else if(""!=dayAtLimitTop)
+			dayAtRest = dayAtLimitTop - dayAtUsed;
+		else
+			dayAtRest = userRestAt;
+		if(""!=dayAtUsed&&""!=dayAtRest&&""!=userRestAt){
+			var strCanvas = $('<div class="col-lg-12" style="text-align:center"><canvas class="margin-bottom-20" id="myChartAmout" width=200 height=200></canvas></div>');
+			todayAtDiv.append(strCanvas);
+			var strP1 = $('<p style="padding-left:30%"><span class="statistic-span" style="background-color:#F38630"></span>今日已用额度：<span id="dayAtUsed"></span></p>');
+			var strP2 = $('<p style="padding-left:30%"><span class="statistic-span" style="background-color:#69D2E7"></span>今日剩余额度：<span id="dayAtRest"></span></p>');
+			todayAtDiv.append(strP1);
+			todayAtDiv.append(strP2);
+			var dataAt = [{value: dayAtUsed,color:"#F38630"},{value : dayAtRest,color : "#69D2E7"}];
+			var ctx = $('#myChartAmout').get(0).getContext("2d");
+			new Chart(ctx).Pie(dataAt);
+			$('#dayAtUsed').html(dayAtUsed+"元");
+			$('#dayAtRest').html(dayAtRest+"元");
+		}else{
+			todayAtDiv.append('<p>该渠道交易额度数据异常</p>');
+		}
+	}
+	
+	//笔数
+	if("1"==isLimit||"3"==isLimit||"0"==isLimit){
+		var dayTransUsed = "$!channelUser.dayTransUsed";
+		var dayTransLimitTop = "$!channelUser.dayTransLimitTop";
+		var dayTransLimit = "$!channelUser.dayTransLimit";
+		var dayTransRest=0;
+		if(""!=dayTransLimit)
+			dayTransRest = dayTransLimit - dayTransUsed;
+		else
+			dayTransRest = dayTransLimitTop - dayTransUsed;
+		if(""!=dayTransUsed){
+			var strCanvas = $('<div class="col-lg-12" style="text-align:center"><canvas class="margin-bottom-20" id="myChartNumber" style="width:100%"></canvas></div>');
+			var strP1 = $('<p style="padding-left:30%"><span class="statistic-span" style="background-color:#F38630"></span>今日已用笔数：<span id="dayTransUsed"></span></p>');
+			var strP2 = $('<p style="padding-left:30%"><span class="statistic-span" style="background-color:#69D2E7"></span>今日剩余笔数：<span id="dayTransRest"></span></p>');
+			if(""!=dayTransRest){
+				todayTransDiv.append(strCanvas);
+				todayTransDiv.append(strP1);
+				todayTransDiv.append(strP2);
+				var dataTrans = [{value: dayTransUsed,color:"#F38630"},{value : dayTransRest,color : "#69D2E7"}];
+				ctx = $('#myChartNumber').get(0).getContext("2d");
+				new Chart(ctx).Doughnut(dataTrans, {responsive : true,percentageInnerCutout : 70});
+				$('#dayTransUsed').html(dayTransUsed+"笔");
+				$('#dayTransRest').html(dayTransRest+"笔");
+			}else{
+				todayTransDiv.append(strP1);
+				$('#dayTransUsed').html(dayTransUsed+"笔");
+			}
+		}else{
+			todayTransDiv.append('<p>该渠道交易笔数数据异常</p>');
+		}
+	}
+}
+loadTodayDate();
+</script>
+<script>
+$('.tmSelect').datetimepicker({
+	minView:"month",
+	format:"yyyy-mm-dd",
+	language:'zh-CN',
+	endDate:new Date(),
+	autoclose:true
+});
+
+function checkDate(){
+	var flag = true;
+	var startTm = $('#startTime').val();
+	var endTm = $('#endTime').val();
+	if(""==startTm||""==endTime){
+		alert("请选择日期进行查询！");
+		flag = false;
+	}else{
+		if(dateDiff(startTm, endTm).day>31){
+			alert("不能大于31天");
+			flag = false;
+		}
+	}
+	return flag;
+}
+
+var dataTrans = [{value: 20,color:"#FF9900"},{value : 80,color : "#69D2E7"},{value : 50,color : "#FF6666"},{value : 30,color : "#CC99CC"}];
+ctx = $('#myChartMode').get(0).getContext("2d");
+new Chart(ctx).Pie(dataTrans);
+</script>
+
+
+<script>
+var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+var lineChartData = {
+	labels : ["1","2","3","4","5","6","7","2","3","4","5","6","7","2","3","4","5","6","7","2","3","4","5","6","7","2","3","4","5","6","7"],
+	datasets : [
+		{
+			label: "My Second dataset",
+			fillColor : "rgba(151,187,205,0.2)",
+			strokeColor : "rgba(151,187,205,1)",
+			pointColor : "rgba(151,187,205,1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(151,187,205,1)",
+			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+		}
+	]
+
+}
+
+window.onload = function(){
+var ctx = document.getElementById("myChartDayAt").getContext("2d");
+window.myLine = new Chart(ctx).Line(lineChartData, {
+	scaleShowGridLines : false,
+	responsive: true
+});
+}
+
+
+</script>

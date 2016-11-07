@@ -1,0 +1,61 @@
+<form class="form-horizontal" action="${rc.contextPath}/channel/updChnlBaseSetting" method="post">
+	<input type="hidden" name="id" value="$!channel.id">
+	<div class="form-group">
+		<label class="col-xs-3 control-label label-title">渠道身份ID</label>
+		<label class="col-xs-3 control-label label-right"><i>$channel.chnlId</i></label>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-3 control-label label-title">渠道名称<span style="color:red">*</span></label>
+		<div class="col-xs-4">
+			<input type="text" class="form-control" id="chnlName" name="chnlName" value="$!channel.chnlName">
+		</div>
+		<label class="col-xs-4 control-label label-tips" id="chnlNameTip"></label>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-3 control-label label-title">联系方式</label>
+		<div class="col-xs-4">
+			<input type="text" class="form-control" name="phone" value="$!channel.phone">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-3 control-label label-title">地址</label>
+		<div class="col-xs-6">
+			<textarea rows="4" class="form-control" name="addr" style="resize:none">$!channel.addr</textarea>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-3 control-label label-title">审核状态</label>
+		<label class="col-xs-3 control-label label-right">
+		#if($!channel.reviewSt=="0")<i style="color:blue">待审核</i>
+		#elseif($!channel.reviewSt=="1")<i style="color:green">通过</i>
+		#else<i style="color:#FB9100">拒绝</i>
+		#end
+		</lable>
+	</div>
+	<div class="form-group">
+		<label class="col-xs-3 control-label label-title">生效状态</label>
+		<label class="col-xs-3 control-label label-right">
+		#if($!channel.validSt=="1")<i style="color:green">已生效</i>
+		#else<i style="color:#FB9100">未生效</i>
+		#end
+		</label>
+	</div>
+	<div class="form-group">
+		<div class="col-xs-12" style="text-align:center">
+			<button class="btn btn-primary" onclick="return validBaseForm();">保存</button>
+		</div>
+	</div>
+</form>
+
+<script>
+function validBaseForm(){
+	$('label[id$=Tip]').html('');
+	var flag = true;
+	var chnlName = $('#chnlName');
+	if(""==chnlName.val()){
+		$('#chnlNameTip').html("<span class='icon-remove-sign'></span> 渠道名称不能为空");
+		flag=false;
+	}
+	return flag;
+}
+</script>

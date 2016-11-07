@@ -1,0 +1,102 @@
+<form class="form-horizontal" action="${rc.contextPath}/chnlUser/updChnlUserBaseSetting" method="post">
+	<input type="hidden" name="id" value="$!channelUser.id">
+	<div id="transAtLimitDiv">
+		<div class="form-group" id="isLimitDiv">
+			<label class="col-xs-3 control-label label-title">限额限笔</label>
+			<div class="col-xs-9">
+				<label class="radio-inline"><input type="radio" name="isLimit" value="0" #if($!channelUser.isLimit=="0"||!$!channelUser.isLimit) checked #end> 不限</label>
+				<label class="radio-inline"><input type="radio" name="isLimit" value="1" #if($!channelUser.isLimit=="1") checked #end> 限额限笔</label>
+				<label class="radio-inline"><input type="radio" name="isLimit" value="2" #if($!channelUser.isLimit=="2") checked #end> 仅限额</label>
+				<label class="radio-inline"><input type="radio" name="isLimit" value="3" #if($!channelUser.isLimit=="3") checked #end> 仅限笔</label>
+			</div>
+		</div>
+		<div class="form-group" id="dayAtLimitDiv">
+			<label class="col-xs-3 control-label label-title">每日额度上限<span style="color:red">*</span></label>
+			<div class="col-xs-3">
+				<input type="text" class="form-control money-only" id="dayAtLimit" name="dayAtLimit" value="$!channelUser.dayAtLimit">
+			</div>
+			<label class="col-xs-1 control-label label-right">元</label>
+			<label class="col-xs-5 control-label label-tips" id="dayAtLimitTip"></label>
+		</div>
+		<div class="form-group" id="dayTransLimitDiv">
+			<label class="col-xs-3 control-label label-title">每日笔数上限<span style="color:red">*</span></label>
+			<div class="col-xs-3">
+				<input type="text" class="form-control  int-num-only" id="dayTransLimit" name="dayTransLimit" value="$!channelUser.dayTransLimit">
+			</div>
+			<label class="col-xs-1 control-label label-right">笔</label>
+			<label class="col-xs-5 control-label label-tips" id="dayTransLimitTip"></label>
+		</div>
+	</div>
+	<div class="form-group" id="entryDiv">
+		<label class="col-xs-3 control-label label-title">交易访问入口</label>
+		<div class="col-xs-9">
+			<label class="radio-inline"><input type="radio" name="entry" value="0" #if($!channelUser.entry=="0"||!$!channelUser.validSt) checked #end> 无权限</label>
+			<label class="radio-inline"><input type="radio" name="entry" value="1" #if($!channelUser.entry=="1") checked #end> 全入口访问</label>
+			<label class="radio-inline"><input type="radio" name="entry" value="2" #if($!channelUser.entry=="2") checked #end> 接口访问</label>
+			<label class="radio-inline" style="margin-left:0"><input type="radio" name="entry" value="3" #if($!channelUser.entry=="3") checked #end> 前台界面访问</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-xs-12" style="text-align:center">
+			<button class="btn btn-primary" onclick="return validSettingForm();">保存</button>
+		</div>
+	</div>
+</form>
+
+<script>
+$("#isLimitDiv :radio").change(function(){
+	limitSelect(this);
+});
+
+function limitSelect(domcument){
+	var val=$(domcument).val();
+	switch(val){
+	case "0"://不限
+		$('#dayAtLimitDiv').hide(500);
+		$('#dayAtLimitDiv input').val('');
+		$('#dayTransLimitDiv').hide(500);
+		$('#dayTransLimitDiv input').val('');
+		break;
+	case "1"://限额限笔
+		$('#dayAtLimitDiv').show(500);
+		$('#dayTransLimitDiv').show(500);
+		break;
+	case "2"://仅限额
+		$('#dayAtLimitDiv').show(500);
+		$('#dayTransLimitDiv').hide(500);
+		$('#dayTransLimitDiv input').val('');
+		break;
+	case "3"://仅限笔
+		$('#dayAtLimitDiv').hide(500);
+		$('#dayAtLimitDiv input').val('');
+		$('#dayTransLimitDiv').show(500);
+		break;
+	default:break;
+	}
+}
+limitSelect($("#isLimitDiv :radio[checked]"));
+
+function validSettingForm(){
+	$('label[id$=Tip]').html('');
+	var flag = true;
+	var isLimit = $('input[type="radio"][name="isLimit"]:checked').val();
+	if("2"==isLimit&&""==$('#dayAtLimit').val()){
+		$('#dayAtLimitTip').html("<span class='icon-remove-sign'></span> 日总额度限制不能为空");
+		flag=false;
+	}
+	if("3"==isLimit&&""==$('#dayTransLimit').val()){
+		$('#dayTransLimitTip').html("<span class='icon-remove-sign'></span> 日总笔数限制不能为空");
+		flag=false;
+	}
+	if("1"==isLimit&&(""==$('#dayAtLimit').val()||""==$('#dayTransLimit').val())){
+		if(""==$('#dayAtLimit').val())
+			$('#dayAtLimitTip').html("<span class='icon-remove-sign'></span> 日总额度限制不能为空");
+		if(""==$('#dayTransLimit').val())
+			$('#dayTransLimitTip').html("<span class='icon-remove-sign'></span> 日总笔数限制不能为空");
+		flag=false;
+	}
+	flag = moneyOnly(flag);
+	flag = intNumOnly(flag);
+	return flag;
+}
+</script>

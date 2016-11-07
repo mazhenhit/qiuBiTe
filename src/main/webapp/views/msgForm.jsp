@@ -14,18 +14,18 @@
 			<hr>
 		</div>
 		<form class="form-horizontal"
-			action="${rc.contextPath}/routeInfo/addRoute" method="post">
+			action="addMsgForm" method="post">
 			<div class="form-group">
 				<div class="col-xs-6 form-horizontal authweb-shadow"
 					id="authModeDiv">
 					<div class="form-group" id="accNoDiv">
-						<label class="col-xs-3 control-label" id="phoLabel">手机号后四位<span
+						<label class="col-xs-3 control-label" id="phoneNumLabel">手机号后四位<span
 							style="color: red">*</span></label>
 						<div class="col-xs-6">
 							<input class="form-control input-show" maxlength=19 type="text"
-								name="pho" id="pho">
+								name="phoneNum" id="phoneNum">
 						</div>
-						<label class="col-xs-3 control-label label-tips" id="phoTip"></label>
+						<label class="col-xs-3 control-label label-tips" id="phoneNumTip"></label>
 					</div>
 					<div class="form-group" id="nameDiv">
 						<label class="col-xs-3 control-label" id="nameLabel">昵称<span
