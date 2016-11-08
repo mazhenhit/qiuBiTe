@@ -14,7 +14,8 @@ CREATE TABLE `tbl_msg_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `phone_num` varchar(4) NOT NULL,
   `name` varchar(64) NOT NULL,
-  `msg`  varchar(512),
+  `msg` varchar(512),
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -29,5 +30,6 @@ CREATE TABLE `tbl_match_info` (
   `name1` varchar(64) NOT NULL,
   `phone_num2` varchar(4) NOT NULL,
   `name2` varchar(64) NOT NULL,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

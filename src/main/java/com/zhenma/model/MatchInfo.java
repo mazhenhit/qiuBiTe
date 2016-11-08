@@ -1,5 +1,7 @@
 package com.zhenma.model;
 
+import java.sql.Timestamp;
+
 public class MatchInfo {
 
 	private int id;
@@ -7,6 +9,7 @@ public class MatchInfo {
 	private String name1;
 	private String phoneNum2;
 	private String name2;
+	private Timestamp updateTime;
 
 	public int getId() {
 		return id;
@@ -46,6 +49,32 @@ public class MatchInfo {
 
 	public void setName2(String name2) {
 		this.name2 = name2;
+	}
+
+	/**
+	 * @return the updateTime
+	 */
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+
+	/**
+	 * @param updateTime
+	 *            the updateTime to set
+	 */
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "id:" + id + "; phoneNum1:" + phoneNum1 + "; name1:" + name1 + "; phoneNum2:" + phoneNum2
+				+ "; updateTime:" + updateTime;
 	}
 
 }

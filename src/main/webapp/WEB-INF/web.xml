@@ -5,6 +5,18 @@
 	http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	
 	<display-name>Spring Web MVC Hello World Application</display-name>
+	
+	<session-config>
+		<cookie-config>
+			<http-only>true</http-only>
+		</cookie-config>
+	</session-config>
+	<display-name>QiuBiTe</display-name>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:spring-mybatis.xml</param-value>
+	</context-param>
+	
 	<!-- 
 	<servlet>
         <servlet-name>Start</servlet-name>
@@ -29,13 +41,24 @@
         </init-param>
         <load-on-startup>0</load-on-startup>
 	</servlet>
- -->
+ 
 	<servlet>
 		<servlet-name>spring</servlet-name>
 			<servlet-class>
 				org.springframework.web.servlet.DispatcherServlet
 			</servlet-class>
 		<load-on-startup>1</load-on-startup>
+	</servlet>
+	-->
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
 	</servlet>
 
 	<servlet-mapping>

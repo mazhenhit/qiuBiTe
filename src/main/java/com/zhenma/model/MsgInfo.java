@@ -1,10 +1,13 @@
 package com.zhenma.model;
 
+import java.sql.Timestamp;
+
 public class MsgInfo {
 	private int id;
 	private String phoneNum;
 	private String name;
 	private String msg;
+	private Timestamp updateTime;
 
 	public int getId() {
 		return id;
@@ -36,6 +39,21 @@ public class MsgInfo {
 
 	public void setMsg(String msg) {
 		this.msg = msg;
+	}
+
+	/**
+	 * @return the updateTime
+	 */
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+
+	/**
+	 * @param updateTime
+	 *            the updateTime to set
+	 */
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
 	}
 
 	@Override

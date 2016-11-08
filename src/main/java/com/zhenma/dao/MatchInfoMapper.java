@@ -1,5 +1,7 @@
 package com.zhenma.dao;
 
-public interface MatchInfoMapper {
+import com.zhenma.model.MatchInfo;
 
+public interface MatchInfoMapper {
+	void insertInfo(MatchInfo matchInfo);
 }
