@@ -9,7 +9,6 @@ public class MatchInfo {
 	private String name1;
 	private String phoneNum2;
 	private String name2;
-	private Timestamp updateTime;
 
 	public int getId() {
 		return id;
@@ -51,21 +50,6 @@ public class MatchInfo {
 		this.name2 = name2;
 	}
 
-	/**
-	 * @return the updateTime
-	 */
-	public Timestamp getUpdateTime() {
-		return updateTime;
-	}
-
-	/**
-	 * @param updateTime
-	 *            the updateTime to set
-	 */
-	public void setUpdateTime(Timestamp updateTime) {
-		this.updateTime = updateTime;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -74,7 +58,7 @@ public class MatchInfo {
 	@Override
 	public String toString() {
 		return "id:" + id + "; phoneNum1:" + phoneNum1 + "; name1:" + name1 + "; phoneNum2:" + phoneNum2
-				+ "; updateTime:" + updateTime;
+				+ "; updateTime:";
 	}
 
 }
