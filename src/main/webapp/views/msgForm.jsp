@@ -1,7 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page language="java" contentType="text/html;charset=utf-8"%>
-
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <html>
 <head>
 <title>信息输入</title>
@@ -13,19 +14,18 @@
 			<p>丘比特信息</p>
 			<hr>
 		</div>
-		<form class="form-horizontal"
-			action="addMsgForm" method="post">
+		<form class="form-horizontal" action="addMsgForm" method="post">
 			<div class="form-group">
 				<div class="col-xs-6 form-horizontal authweb-shadow"
 					id="authModeDiv">
 					<div class="form-group" id="accNoDiv">
-						<label class="col-xs-3 control-label" id="phoneNumLabel">手机号后四位<span
+						<label class="col-xs-3 control-label" id="phoneLabel">手机尾号(四位哦)<span
 							style="color: red">*</span></label>
 						<div class="col-xs-6">
 							<input class="form-control input-show" maxlength=19 type="text"
-								name="phoneNum" id="phoneNum">
+								name="phone" id="phone">
 						</div>
-						<label class="col-xs-3 control-label label-tips" id="phoneNumTip"></label>
+						<label class="col-xs-3 control-label label-tips" id="phoneTip"></label>
 					</div>
 					<div class="form-group" id="nameDiv">
 						<label class="col-xs-3 control-label" id="nameLabel">昵称<span
@@ -50,10 +50,12 @@
 			</div>
 
 			<div class="form-group">
-				<div class="col-xs-12" style="text-align: center">
+				<div class="col-xs-12" style="text-align: left">
 					<button type="submit" onclick=true class="btn btn-primary">提交
 					</button>
 				</div>
 			</div>
+		</form>
+	</div>
 </body>
 </html>

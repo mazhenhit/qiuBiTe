@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhenma.dao.MatchInfoMapper">
-
+   
 	<insert id="insertInfo" parameterType="com.zhenma.model.MatchInfo">
 		insert into
 		tbl_match_info (phone_num1, name1, phone_num2, name2
