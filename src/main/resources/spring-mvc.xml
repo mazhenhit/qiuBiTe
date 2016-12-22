@@ -9,11 +9,13 @@
                         http://www.springframework.org/schema/mvc  
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
-	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
-	<context:component-scan base-package="com.zhenma.*" >
+	<!-- 看不懂以下是啥意思，注释掉了  -->
+	<!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器  
+	<context:component-scan base-package="com.zhenma" >
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />  
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />  
-	</context:component-scan>  
+	</context:component-scan> -->
+	<context:component-scan base-package="com.zhenma.*"/>
 	
 	<mvc:resources mapping="/resources/**" location="/resources/" cache-period="86400"/>
 	<mvc:annotation-driven/>
