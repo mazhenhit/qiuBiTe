@@ -1,5 +1,7 @@
 package com.zhenma.service.imp;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -25,8 +27,22 @@ public class MsgInfoServiceImp implements MsgInfoService {
 		try {
 			msgInfoMapper.insertInfo(msgInfo);
 		} catch (Exception e) {
-			System.err.println("msgInfo插入失败！");
+			System.err.println("msgInfo插入失败！" + e);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.zhenma.service.MsgInfoService#selectAllInfo()
+	 */
+	@Override
+	public List<MsgInfo> selectAllInfo() {
+		List<MsgInfo> msgInfos = null;
+		try{
+			msgInfos = msgInfoMapper.selectAllInfo();
+		}catch(Exception e){
+			System.err.println("msgInfoMapper.selectAllInfo" + e);
+		}
+		return msgInfos;
 	}
 
 }

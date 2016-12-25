@@ -23,7 +23,7 @@
 							style="color: red">*</span></label>
 						<div class="col-xs-6">
 							<input class="form-control input-show" maxlength=19 type="text"
-								name="phone" id="phone">
+								name="phoneNum" id="phoneNum">
 						</div>
 						<label class="col-xs-3 control-label label-tips" id="phoneTip"></label>
 					</div>
