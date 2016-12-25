@@ -51,17 +51,6 @@ public class MatchInfo {
 		this.name2 = name2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "id:" + id + "; phoneNum1:" + phoneNum1 + "; name1:" + name1 + "; phoneNum2:" + phoneNum2
-				+ "; updateTime:" + updateTime;
-	}
-
 	public Timestamp getUpdateTime() {
 		return updateTime;
 	}

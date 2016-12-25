@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zhenma.dao.MatchInfoMapper">
    
+   <resultMap id="BaseResultMap" type="com.zhenma.model.MatchInfo">
+		<id column="id" property="id"/>
+		<result column="phone_num1" property="phoneNum1"/>
+		<result column="name1" property="name1"/>
+		<result column="phone_num2" property="phoneNum2"/>
+		<result column="name2" property="name2"/>
+		<result column="update_time" property="updateTime"/>
+	</resultMap>
+	
 	<insert id="insertInfo" parameterType="com.zhenma.model.MatchInfo">
 		insert into
 		tbl_match_info (phone_num1, name1, phone_num2, name2
@@ -11,5 +20,9 @@
 		#{phoneNum2,jdbcType=VARCHAR},
 		#{name2,jdbcType=VARCHAR})
 	</insert>
+	
+	<select id="selectAllMatchInfo" resultMap="BaseResultMap">
+		select * from tbl_match_info
+	</select>
 	
 </mapper>

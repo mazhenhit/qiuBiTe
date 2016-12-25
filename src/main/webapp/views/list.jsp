@@ -22,9 +22,10 @@
 		<c:forEach items="${matchInfos}" var="item">
 			<tr>
 				<td>${item.id }</td>
-				<td>${item.phone1 }</td>
+				<td>${item.phoneNum1 }</td>
 				<td>${item.name1 }</td>
 				<td>${item.name2 }</td>
+				<td>${item.updateTime }</td>
 			</tr>
 		</c:forEach>
 

@@ -1,5 +1,7 @@
 package com.zhenma.service.imp;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -24,6 +26,20 @@ public class MatchInfoServiceImp implements MatchInfoService {
 		} catch(Exception e){
 			System.err.println("matchInfoMapper插入失败！");
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.zhenma.service.MatchInfoService#selectAllMatchInfo()
+	 */
+	@Override
+	public List<MatchInfo> selectAllMatchInfo() {
+		List<MatchInfo> matchInfos = null;
+		try{
+			matchInfos = matchInfoMapper.selectAllMatchInfo();
+		} catch(Exception e){
+			System.err.println("matchInfoMapper.selectAllMatchInfo:" + e);
+		}
+		return matchInfos;
 	}
 
 }
